@@ -6,18 +6,24 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # on définit les deux commits utilisés par ton script
+    env:
+      BADHASH: "c1a4be04b972b6c17db242fc37752ad517c29402"
+      GOODHASH: "e4cfc6f77ebbe2e23550ddab682316ab4ce1c03c"
+
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # important pour que git bisect voie tout l’historique
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.9"
 
-      - name: Install packages
+      - name: Install dependencies
         run: pip install -r requirements.txt
 
-      - name: Run tests
-        run: python manage.py test
+      # ⬇️ ici on exécute ton script python qui lance git bisect
+      - name: Run git bisect automation
+        run: python myscript.py
